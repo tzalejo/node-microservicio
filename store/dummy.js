@@ -1,8 +1,8 @@
 const db = {
     'user':[
-        {id: 1, name: 'Alej'},
-        {id: 2, name: 'Pablo'},
-        {id: 3, name: 'Amelie'},
+        {id: '1', name: 'Alej'},
+        {id: '2', name: 'Pablo'},
+        {id: '3', name: 'Amelie'},
     ]
 };
 
