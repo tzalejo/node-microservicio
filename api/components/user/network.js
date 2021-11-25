@@ -35,9 +35,8 @@ function create(req, res){
             response.sucess(req, res, user, 201);
         })
         .catch((err)=> {
-            response.error(req, res, 'Error interno', 500);
+            response.error(req, res, err.message, 500);
         });
-    response.sucess(req, res, user, 200);
 }
 
 function update(req, res){
