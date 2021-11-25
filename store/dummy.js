@@ -6,20 +6,23 @@ const db = {
     ]
 };
 
-function list(tabla){
+async function list(tabla){
     return db[tabla];
 }
 
-function get(tabla, id){
-    let col = list(tabla);
+async function get(tabla, id){
+    let col = await list(tabla);
     return col.filter(item => item.id === id)[0] || null;
 }
 
-function upsert(tabla, data){
+async function upsert(tabla, data){
     db[tabla].push(data);
 }
-function remove(tabla, id){
+async function remove(tabla, id){
+    return true;
+}
+async function update(){
     return true;
 }
 
-module.exports = { list, get, upsert, remove }
+module.exports = { list, get, upsert, remove, update }
