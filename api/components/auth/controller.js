@@ -21,8 +21,13 @@ module.exports = function (injectedStore) {
 
         return store.upsert(TABLA, authData);
     }
-
+    
+    async function login(username, password){
+        const data = await store.query(TABLA, {username: username});
+        return data ;
+    }
     return {
         upsert,
+        login,
     };
 } 

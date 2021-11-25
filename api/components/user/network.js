@@ -32,6 +32,7 @@ function get(req, res){
 function create(req, res){
     Controller.create(req.body)
         .then((user)=>{
+            console.log('create', user);
             response.sucess(req, res, user, 201);
         })
         .catch((err)=> {
