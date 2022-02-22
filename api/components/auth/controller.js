@@ -1,6 +1,9 @@
-const auth = requre('./../../../auth');
 
+const auth = require('./../../../auth');
+const bcrypt = require('bcrypt');
 const TABLA = 'auth';
+
+
 module.exports = function (injectedStore) {
 
     let store = injectedStore;
@@ -8,7 +11,7 @@ module.exports = function (injectedStore) {
         store = require('../../../store/dummy');
     }
 
-    function upsert(data){
+    async function upsert(data){
         const authData = {
             id: data.id,
         }
@@ -18,7 +21,8 @@ module.exports = function (injectedStore) {
         }
 
         if(data.password){
-            authData.password = data.password;
+
+            authData.password = await bcrypt.hash(data.password, 10);
         }
 
         return store.upsert(TABLA, authData);
@@ -26,11 +30,15 @@ module.exports = function (injectedStore) {
     
     async function login(username, password){
         const data = await store.query(TABLA, {username: username});
-        if (data.password === password) {
-            return auth.sign(data);
-        } else {
-            throw new Error('Token invalido');
-        }
+
+        return bcrypt.compare(password, data.password)
+            .then(sonIguales => {          
+                if (sonIguales) {
+                    return auth.sign(data);
+                } else {
+                    throw new Error('Token invalido');
+                }
+            });
     }
 
     return {
