@@ -1,12 +1,13 @@
 const express = require('express');
+const secure = require('./secure');
 const response = require('./../../../network/response');
 const Controller = require('./index');
 const router = express.Router();
 
 router.get('/', list);
 router.get('/:id', get);
-router.post('/', create);
-router.put('/:id',update);
+router.post('/', upsert);
+router.put('/',secure('update'), upsert);
 
 // funciones internas
 function list(req, res){
@@ -29,8 +30,8 @@ function get(req, res){
         });
 }
 
-function create(req, res){
-    Controller.create(req.body)
+function upsert(req, res){
+    Controller.upsert(req.body)
         .then((user)=>{
             console.log('create', user);
             response.sucess(req, res, user, 201);
@@ -40,15 +41,6 @@ function create(req, res){
         });
 }
 
-function update(req, res){
-    Controller.update(req.params.id, req.body)
-        .then((user)=>{
-            response.sucess();
-        })
-        .catch((err)=>{
-            response.error();
-        });
-}
 
 module.exports = router;
 

@@ -16,7 +16,7 @@ module.exports = function (injectedStore) {
         return store.get(TABLA, id);
     }
 
-    async function create(body) {
+    async function upsert(body) {
         const user = {
             name: body.name,
             username: body.username,
@@ -36,28 +36,13 @@ module.exports = function (injectedStore) {
             });
         }
         
-        return store.upsert(TABLA, user);
+        store.upsert(TABLA, user);
+        return user;
     }
-    
-    function update(id, body){
-        const rta = store.get(TABLA, id);
-        return true;     
-    }
-
+   
     return {
         list,
         get,
-        create,
-        update,
-    };
+        upsert
+    }
 }
-
-/*module.exports = (injectedStore) => {
-    if(!injectedStore) injectedStore = require("../../../store/dummy");
-
-    return {
-        list: () => injectedStore.list('user'),
-        get: id => injectedStore.get('user', id),
-        create: data => injectedStore.upsert('user', data)
-    };
-};*/
