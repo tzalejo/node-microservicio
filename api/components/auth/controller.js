@@ -1,3 +1,4 @@
+const auth = requre('./../../../auth');
 
 const TABLA = 'auth';
 module.exports = function (injectedStore) {
@@ -15,6 +16,7 @@ module.exports = function (injectedStore) {
         if(data.username){
             authData.username = data.username;
         }
+
         if(data.password){
             authData.password = data.password;
         }
@@ -24,8 +26,13 @@ module.exports = function (injectedStore) {
     
     async function login(username, password){
         const data = await store.query(TABLA, {username: username});
-        return data ;
+        if (data.password === password) {
+            return auth.sign(data);
+        } else {
+            throw new Error('Token invalido');
+        }
     }
+
     return {
         upsert,
         login,
